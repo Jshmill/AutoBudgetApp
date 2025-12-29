@@ -1,0 +1,51 @@
+.dashboard {
+  width: 100%;
+  max-width: 64rem; /* max-w-4xl */
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.dashboard h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1f2937; /* gray-800 */
+}
+
+.dashboard h3 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.transaction-table {
+  width: 100%;
+  background-color: #f3f4f6; /* gray-100 */
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+}
+
+.transaction-table th,
+.transaction-table td {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #e5e7eb; /* gray-200 */
+  text-align: left;
+}
+
+.transaction-table th {
+  font-weight: 600;
+}
+
+.total-cost {
+  background-color: #f3f4f6; /* gray-100 */
+  padding: 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem; /* text-sm */
+}

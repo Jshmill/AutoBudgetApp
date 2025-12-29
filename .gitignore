@@ -1,0 +1,17 @@
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+*.db
+
+# Node
+node_modules/
+dist/
+package-lock.json
+
+# System
+.DS_Store
