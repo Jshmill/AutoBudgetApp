@@ -12,7 +12,8 @@ const COLUMNS = [
 
 const Home = () => {
   const [data, setData] = useState([]);
-  const [totalCost, setTotalCost] = useState(null);
+  const [weeklyCost, setWeeklyCost] = useState(null);
+  const [dailyCost, setDailyCost] = useState(null);
   const [balances, setBalances] = useState([]);
 
   useEffect(() => {
@@ -33,21 +34,30 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchTransactions = async () => {
       const response = await fetch('http://127.0.0.1:8000/transactions');
       const responseData = await response.json();
       setData(responseData);
     };
-    fetchData();
+    fetchTransactions();
   }, []);
 
   useEffect(() => {
-    const fetchTotalCost = async () => {
-      const response = await fetch('http://127.0.0.1:8000/transactions/totalcost');
+    const fetchWeeklyCost = async () => {
+      const response = await fetch('http://127.0.0.1:8000/transactions/weeklycost');
       const responseData = await response.json();
-      setTotalCost(responseData);
+      setWeeklyCost(responseData);
     };
-    fetchTotalCost();
+    fetchWeeklyCost();
+  }, []);
+
+  useEffect(() => {
+    const fetchDailyCost = async () => {
+      const response = await fetch('http://127.0.0.1:8000/transactions/dailycost');
+      const responseData = await response.json();
+      setDailyCost(responseData);
+    };
+    fetchDailyCost();
   }, []);
 
   return (
@@ -87,8 +97,10 @@ const Home = () => {
 
         <h3>Account Balances:</h3>
         <div className="balance-container">
+          {console.log(balances)}
           {balances.length > 0 ? (
             <div className="balance-grid">
+              
               {balances.map((account, index) => (
                 <div key={index} className="balance-card">
                   <h4>{account.name}</h4>
@@ -102,10 +114,25 @@ const Home = () => {
             <p>No account linked or balance data unavailable.</p>
           )}
         </div>
+        <div className="summary-grid">
+          <div className="summary-card">
+            <h3>This Week:</h3>
+            <div
+              className={`cost-value ${weeklyCost < 0 ? 'negative' : 'positive'}`}
+            >
+              {weeklyCost !== null ? `$${weeklyCost}` : 'No data available'}
+            </div>
 
-        <h3>Total Cost:</h3>
-        <div className="total-cost">
-          {totalCost !== null ? `$${totalCost}` : 'No data available'}
+          </div>
+          <div className="summary-card">
+            <h3>Today:</h3>
+            <div
+              className={`cost-value ${dailyCost < 0 ? 'negative' : 'positive'}`}
+            >
+              {dailyCost !== null ? `$${dailyCost}` : 'No data available'}
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
