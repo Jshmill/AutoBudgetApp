@@ -12,6 +12,7 @@ from plaid.model.item_public_token_exchange_request import ItemPublicTokenExchan
 from plaid.model.transactions_sync_request import TransactionsSyncRequest
 from plaid.model.products import Products
 from plaid.model.country_code import CountryCode
+from plaid.model.accounts_balance_get_request import AccountsBalanceGetRequest
 import datetime
 
 # Plaid Configuration
@@ -159,19 +160,53 @@ def sync_transactions(access_token, db):
 
 
 
-# @app.get("/transactions")
-# def list_transactions(db: Session = Depends(get_db)):
-#     return crud.get_transactions(db)
-
 
 
 
 @app.get("/transactions")
 def list_transactions(db: Session = Depends(get_db)):
-    result = db.execute(text("SELECT * FROM transactions"))
+    result = db.execute(text("SELECT * FROM transactions ORDER BY date DESC"))
     return result.mappings().all()
 
 @app.get("/transactions/totalcost")
 def get_total_cost(db: Session = Depends(get_db)):
     result = db.execute(text("SELECT SUM(amount) FROM transactions"))
     return result.scalar()
+
+@app.get("/transactions/weeklycost")
+def get_weekly_cost(db: Session = Depends(get_db)):
+    result = db.execute(text("SELECT SUM(amount) FROM transactions WHERE date >= date('now', '-7 days')"))
+    return result.scalar()
+
+@app.get("/transactions/dailycost")
+def get_daily_cost(db: Session = Depends(get_db)):
+    result = db.execute(text("SELECT SUM(amount) FROM transactions WHERE date = date('now')"))
+    return result.scalar()
+@app.get("/balances")
+def get_balances(db: Session = Depends(get_db)):
+    # Get the latest access token (assuming single user/session for now)
+    item = db.query(models.PlaidItem).first()
+    if not item:
+        return {"error": "No linked account found"}
+    
+    try:
+        request = AccountsBalanceGetRequest(
+            access_token=item.access_token
+        )
+        response = client.accounts_balance_get(request)
+        
+        # Return simplified balance info for all accounts
+        accounts_data = []
+        for account in response['accounts']:
+            accounts_data.append({
+                "name": account['name'],
+                "current_balance": account['balances']['current'],
+                "available_balance": account['balances']['available'],
+                "currency": account['balances']['iso_currency_code'],
+                "type": str(account['type']),
+                "subtype": str(account['subtype'])
+            })
+            
+        return accounts_data
+    except plaid.ApiException as e:
+        return {"error": e.body}
