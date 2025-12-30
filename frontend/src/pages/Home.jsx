@@ -54,7 +54,7 @@ const Home = () => {
 
         <h3>Total Cost:</h3>
         <div className="total-cost">
-          {totalCost !== null ? totalCost : 'No data available'}
+          {totalCost !== null ? `$${totalCost}` : 'No data available'}
         </div>
       </div>
     </div>

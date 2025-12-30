@@ -15,3 +15,9 @@ package-lock.json
 
 # System
 .DS_Store
+
+# Build Artifacts
+backend/dist/
+backend/build/
+frontend/release/
+*.spec

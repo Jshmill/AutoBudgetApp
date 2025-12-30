@@ -47,3 +47,17 @@ When signing into the bank, choose continue as guest, choose the Plaid bank, and
 - Password: `pass_good`
 
 For your phone number, use `415-555-0011`. The phone number verification code is `123456`.
+
+
+
+## Repackaging the app
+
+To repackage the app, run the following command:
+
+```bash
+npm run dist
+```
+
+
+
+Built app lives in frontend/release/AutoBudget-0.0.0-arm64.dmg
