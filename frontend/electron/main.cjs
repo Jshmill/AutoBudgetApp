@@ -16,15 +16,16 @@ const createWindow = () => {
   });
 
   const isDev = !app.isPackaged;
-  const startUrl = isDev ? 'http://localhost:5173' : `file://${path.join(__dirname, '../dist/index.html')}`;
 
   if (isDev) {
-    win.loadURL(startUrl);
+    win.loadURL('http://localhost:5173');
     win.webContents.openDevTools({ mode: 'detach' });
   } else {
-    win.loadFile(path.join(__dirname, '../dist/index.html'));
+    const indexPath = path.join(app.getAppPath(), 'dist', 'index.html');
+    win.loadFile(indexPath);
   }
 };
+
 
 app.whenReady().then(() => {
   if (app.isPackaged) {

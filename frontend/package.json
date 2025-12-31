@@ -14,6 +14,7 @@
     "dist": "npm run build && electron-builder"
   },
   "build": {
+    "asar": false,
     "appId": "com.autobudget.app",
     "productName": "AutoBudget",
     "directories": {
@@ -37,6 +38,12 @@
         "from": "../backend/.env",
         "to": ".env"
       }
+    ],
+    "files": [
+      "electron/**/*",
+      "dist/**/*",
+      "package.json",
+      "node_modules/**/*"
     ]
   },
   "dependencies": {

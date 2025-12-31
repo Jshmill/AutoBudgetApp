@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Home.scss';
+import {Grid, Paper} from '@mui/material'
 
 const COLUMNS = [
-  { key: 'id', label: 'ID' },
   { key: 'date', label: 'Date' },
   { key: 'description', label: 'Description' },
   { key: 'amount', label: 'Amount' },
@@ -81,10 +81,14 @@ const Home = () => {
                 <tr key={item.id}>
                   {COLUMNS.map(col => (
                     <td key={col.key}>
-  {col.key === 'amount'
-    ? `$${Number(item[col.key]).toFixed(2)}`
-    : item[col.key]}
-</td>
+                      {col.key === 'amount' ? (
+                        item[col.key] < 0
+                          ? `-$${Math.abs(Number(item[col.key])).toFixed(2)}`
+                          : `$${Number(item[col.key]).toFixed(2)}`
+                      ) : (
+                        item[col.key]
+                      )}
+                    </td>
 
                   ))}
                 </tr>
@@ -120,7 +124,7 @@ const Home = () => {
             <div
               className={`cost-value ${weeklyCost < 0 ? 'negative' : 'positive'}`}
             >
-              {weeklyCost !== null ? `$${weeklyCost}` : 'No data available'}
+              {weeklyCost !== null ? `$${weeklyCost}` : '$0'}
             </div>
 
           </div>
@@ -129,7 +133,7 @@ const Home = () => {
             <div
               className={`cost-value ${dailyCost < 0 ? 'negative' : 'positive'}`}
             >
-              {dailyCost !== null ? `$${dailyCost}` : 'No data available'}
+              {dailyCost !== null ? `$${dailyCost}` : '$0'}
             </div>
 
           </div>

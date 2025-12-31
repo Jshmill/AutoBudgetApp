@@ -162,26 +162,42 @@ def sync_transactions(access_token, db):
 
 
 
-
+"""
+Gets all the transactions from the database
+"""
 @app.get("/transactions")
 def list_transactions(db: Session = Depends(get_db)):
     result = db.execute(text("SELECT * FROM transactions ORDER BY date DESC"))
     return result.mappings().all()
 
+"""
+Gets the total cost of all transactions
+TODO Find out if I really need this
+"""
 @app.get("/transactions/totalcost")
 def get_total_cost(db: Session = Depends(get_db)):
     result = db.execute(text("SELECT SUM(amount) FROM transactions"))
     return result.scalar()
 
+"""
+Gets the cost of all transactions over the past week
+"""
 @app.get("/transactions/weeklycost")
 def get_weekly_cost(db: Session = Depends(get_db)):
     result = db.execute(text("SELECT SUM(amount) FROM transactions WHERE date >= date('now', '-7 days')"))
     return result.scalar()
 
+"""
+Gets the cost of all transactions over the past day
+"""
 @app.get("/transactions/dailycost")
 def get_daily_cost(db: Session = Depends(get_db)):
     result = db.execute(text("SELECT SUM(amount) FROM transactions WHERE date = date('now')"))
     return result.scalar()
+
+"""
+Plaid API call to get the account balances
+"""
 @app.get("/balances")
 def get_balances(db: Session = Depends(get_db)):
     # Get the latest access token (assuming single user/session for now)

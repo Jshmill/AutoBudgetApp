@@ -55,9 +55,11 @@ For your phone number, use `415-555-0011`. The phone number verification code is
 To repackage the app, run the following command:
 
 ```bash
+cd frontend
 npm run dist
+cd ..
 ```
 
 
 
-Built app lives in frontend/release/AutoBudget-0.0.0-arm64.dmg
+Built app lives in frontend/release/AutoBudget-0.0.0-arm64.dmge
